@@ -16,7 +16,7 @@ from nodes import (
 )
 
 #load_dotenv(override=True)  # Override, so it would use your local .env file
-load_dotenv(dotenv_path="C:\\Users\\yi_li\\OneDrive\\Desktop\\sensorAgent\\.env_template")
+load_dotenv(dotenv_path="C:\\Users\\yi_li\\OneDrive\\Desktop\\Train_Sentinal_Sensor_Agent\\sensorAgent\\.env_template")
 
 def build_graph():
     """

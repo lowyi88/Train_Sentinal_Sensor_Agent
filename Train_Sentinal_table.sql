@@ -3,6 +3,7 @@ CREATE TABLE public.platform (
 	"time" timestamp NULL,
 	passenger_count int4 NULL,
 	incident varchar NULL,
+	platform_id varchar NULL,
 	CONSTRAINT platform_pkey PRIMARY KEY (id)
 );
 
@@ -13,5 +14,6 @@ CREATE TABLE public.train (
 	"time" timestamp NULL,
 	expected_resolve timestamp NULL,
 	remarks varchar NULL,
+	train_id varchar NULL,
 	CONSTRAINT train_pkey PRIMARY KEY (id)
 );

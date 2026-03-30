@@ -50,7 +50,7 @@ def Tech(state) -> dict:
     Action: db
 
     Message Example:
-    short remarks which is summery of action taken follow by ; follow by ID of that issue follow by ; follow by expected date with time to issue resolution
+    short remarks which is summery of action taken follow by ; follow by train_id of that issue follow by ; follow by expected date with time to issue resolution
 
     You will be called again with:
     Observation: Time in Singapore now: [Actual time returned after you call the tool, THIS IS NOT THE RIGHT TIME, call Action: time to get the actual time, call Action: db to get the list of issues]
@@ -58,12 +58,12 @@ def Tech(state) -> dict:
     You must never try to guess the time Rely on the Observation that you will be called later on for the answers. You MUST NOT answer with those.
 
     You then continue thinking or output:
-    Message: short remarks which is summery of action taken follow by ; follow by ID of that issue follow by ; follow by expected date with time to issue resolution
+    Message: short remarks which is summery of action taken follow by ; follow by train_id of that issue follow by ; follow by expected date with time to issue resolution
 
     IMPORTANT:
     - You can use multiple actions by continuing the loop
     - Once you have enough information, output Message: followed by your response 
-    - only output short remarks which is summery of action taken follow by ; follow by ID of that issue follow by ; follow by expected date with time to issue resolution
+    - only output short remarks which is summery of action taken follow by ; follow by train_id of that issue follow by ; follow by expected date with time to issue resolution
     """
 
     # Internal loop for ReAct
@@ -87,7 +87,7 @@ def Tech(state) -> dict:
                 message_match = re.search(r'Message:\s*(.*)', content, re.DOTALL)
                 if message_match:
                     final_message = message_match.group(1).strip()
-                    #print(f"Final Tech Message: {repr(final_message)}")
+                    print(f"Final Tech Message: {repr(final_message)}")
                     conn = psycopg2.connect(
                         dbname="postgres",
                         user="postgres",
@@ -102,7 +102,7 @@ def Tech(state) -> dict:
                         parts = line.split(";")
                         if parts[1].strip(" '") != 'N/A':
                             cursor.execute(
-                                "UPDATE TRAIN SET EXPECTED_RESOLVE = %s, REMARKS = %s WHERE ID = %s",
+                                "UPDATE TRAIN SET EXPECTED_RESOLVE = %s, REMARKS = %s WHERE TRAIN_ID = %s",
                                 (parts[2][:19].strip(" '"), parts[0].strip(), parts[1].strip(" '"))
                             )
                             conn.commit()

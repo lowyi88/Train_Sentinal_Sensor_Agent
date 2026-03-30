@@ -24,9 +24,10 @@ def Crowd(state) -> dict:
 You run in a loop of Thought, Action, Observation.
 
 Use Thought to achieve the goals set below:
--you would randomly return a time of the day
+-you would randomly return time of the day
 -you would randomly return a number passenger count representing waiting passenger in station
 -you would randomly return medical emergenices of passenger on board, sometimes there is no medical emergencies
+-you woudl randomly return a platform ID in the range EW1 to EW33
 
 Your available actions are:
 
@@ -45,13 +46,13 @@ Observation: Time in Singapore now: [Actual time returned after you call the too
 You must never try to guess the time Rely on the Observation that you will be called later on for the answers. You MUST NOT answer with those.
 
 You then continue thinking or output:
-Message: time;passenger count;medical emergenices 
+Message: date with time;passenger count;medical emergenices;platform ID 
 
 
 IMPORTANT:
 - You can use multiple actions by continuing the loop
 - Once you have enough information, output Message: followed by your response 
-- Only output time follow by ; follow by passenger count follow by ; follow by medical emergencies, 'NA' if none
+- Only output date with time follow by ; follow by passenger count follow by ; follow by medical emergencies, 'NA' if none follow by ; follow by platform ID
 """
 
     # Internal loop for ReAct

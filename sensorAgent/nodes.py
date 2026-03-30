@@ -68,8 +68,8 @@ def db_writer(state):
             if state["train_status"]:
                 parts = state["train_status"].split(";")
                 cursor.execute(
-                    "INSERT INTO TRAIN (TECHNICAL, MEDICAL, ""TIME"") VALUES (%s, %s, %s)",
-                    (parts[0], parts[1], parts[2])
+                    "INSERT INTO TRAIN (TECHNICAL, MEDICAL, ""TIME"", TRAIN_ID) VALUES (%s, %s, %s, %s)",
+                    (parts[0], parts[1], parts[2], parts[3])
                 )
                 conn.commit()
 
@@ -77,8 +77,8 @@ def db_writer(state):
             if state["crowd_status"]:
                 parts = state["crowd_status"].split(";")
                 cursor.execute(
-                    "INSERT INTO PLATFORM (""TIME"", PASSENGER_COUNT, INCIDENT) VALUES (%s, %s, %s)",
-                    (parts[0], parts[1], parts[2])
+                    "INSERT INTO PLATFORM (""TIME"", PASSENGER_COUNT, INCIDENT, PLATFORM_ID) VALUES (%s, %s, %s, %s)",
+                    (parts[0], parts[1], parts[2], parts[3])
                 )
                 conn.commit()
         
