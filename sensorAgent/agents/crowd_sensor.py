@@ -34,15 +34,17 @@ def main():
         where=(precision + recall) != 0
     )
     best_threshold = thresholds[np.argmax(f1_scores)]
-    print("Best threshold:", best_threshold)
-    binary_preds = (np.array(y_scores) >= best_threshold).astype(int)
 
-    for score, label, pred in zip(y_scores, y_true, binary_preds):
-        score = float(score)   # convert numpy scalar/array to Python float
-        label = int(label)     # ensure label is int
-        pred = int(pred)       # ensure prediction is int
-        print(f"Score={score:.4f}, True={label}, Pred={pred}")
+    results1 = engine.predict(data_path="C:\\Users\\yi_li\\OneDrive\\Desktop\\Train_Sentinal_Sensor_Agent\\platform_eval\\Normal")
+    for batch in results1:
+        # Access the image path
+        file_name = batch.image_path
+        score = batch.pred_score.item()  # convert tensor to float
+        label = batch.pred_label.item()  # 0 = normal, 1 = abnormal
 
+        if (label == 1) or (score > best_threshold):
+            print("Best threshold:", best_threshold)
+            print("Abnormal detected:", file_name, "with score:", score)
  
 if __name__ == "__main__":
     main()
