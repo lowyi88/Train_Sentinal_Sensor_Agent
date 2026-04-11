@@ -3,6 +3,7 @@ from anomalib.models import Padim
 from anomalib.engine import Engine
 from sklearn.metrics import precision_recall_curve
 import numpy as np
+import paho.mqtt.client as mqtt
 
 def main():
     dataset = Folder(
@@ -12,6 +13,8 @@ def main():
         abnormal_dir="test\\Abnormal", # optional anomalies for evaluation
         num_workers=23    
     )
+    BROKER = "broker.hivemq.com"   # Replace with your broker (local or cloud)
+    PORT = 1883
 
     model = Padim()
     engine = Engine(accelerator="cpu", devices=1)
@@ -36,6 +39,9 @@ def main():
     best_threshold = thresholds[np.argmax(f1_scores)]
 
     results1 = engine.predict(data_path="C:\\Users\\yi_li\\OneDrive\\Desktop\\Train_Sentinal_Sensor_Agent\\platform_eval\\Normal")
+    client = mqtt.Client()
+    client.connect(BROKER, PORT, 60)
+    
     for batch in results1:
         # Access the image path
         file_name = batch.image_path
@@ -45,6 +51,20 @@ def main():
         if (label == 1) or (score > best_threshold):
             print("Best threshold:", best_threshold)
             print("Abnormal detected:", file_name, "with score:", score)
+            publish_anomaly(file_name, score, client)
+            
+    client.disconnect()
+
+def publish_anomaly(file_name, score, client):
+    # --- MQTT Setup ---
+    TOPIC = "sensorAgent/anomaly"
+    client.loop_start()
+    
+    message = f"Abnormal detected: {file_name} with score {score:.4f}"
+    client.publish(TOPIC, message)
+    print("Published:", message)
+
+    client.loop_stop()
  
 if __name__ == "__main__":
     main()
