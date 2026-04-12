@@ -39,7 +39,7 @@ def main():
     best_threshold = thresholds[np.argmax(f1_scores)]
 
     results1 = engine.predict(data_path="C:\\Users\\yi_li\\OneDrive\\Desktop\\Train_Sentinal_Sensor_Agent\\platform_eval\\Normal")
-    client = mqtt.Client()
+    client = mqtt.Client(clean_session=False)
     client.connect(BROKER, PORT, 60)
     
     for batch in results1:
@@ -61,7 +61,7 @@ def publish_anomaly(file_name, score, client):
     client.loop_start()
     
     message = f"Abnormal detected: {file_name} with score {score:.4f}"
-    client.publish(TOPIC, message)
+    client.publish(TOPIC, message, qos=1)
     print("Published:", message)
 
     client.loop_stop()
